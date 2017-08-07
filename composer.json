@@ -1,0 +1,39 @@
+{
+    "name": "wsw/money",
+    "description": "Value Object Money",
+    "type": "library",
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ronaldo M. Rodrigues",
+            "email": "ronaldo@whera.com.br"
+        }
+    ],
+    "require": {
+        "php": ">=5.6",
+        "ext-bcmath": "*"
+    },
+    "require-dev": {
+        "rdehnhardt/var-dumper": "^1.1",
+        "phpunit/phpunit": "^5.7",
+        "squizlabs/php_codesniffer": "^3.0",
+        "sebastian/phpcpd": "^3.0",
+        "fzaninotto/faker": "^1.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "WSW\\Money\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "WSW\\Money\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "check-style": "vendor/bin/phpcs -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 src",
+        "fix-style": "vendor/bin/phpcbf -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 src"
+    }
+}
