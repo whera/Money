@@ -3,6 +3,8 @@
 namespace WSW\Money;
 
 use InvalidArgumentException;
+use WSW\Money\Support\Calculation;
+use WSW\Money\Support\Formatters;
 
 /**
  * Class Money
@@ -12,6 +14,9 @@ use InvalidArgumentException;
  */
 final class Money
 {
+    use Calculation;
+    use Formatters;
+
     const SCALE = 6;
 
     /**
@@ -95,7 +100,7 @@ final class Money
     {
         $this->assertSameCurrency($other);
 
-        return (int) bccomp($this->getAmount(), $other->getAmount(), static::SCALE);
+        return $this->comparator($this->getAmount(), $other->getAmount(), static::SCALE);
     }
 
     /**
@@ -107,9 +112,8 @@ final class Money
     public function add(Money $addend)
     {
         $this->assertSameCurrency($addend);
-        $newValue = bcadd($this->getAmount(), $addend->getAmount(), static::SCALE);
 
-        return $this->newInstance($newValue);
+        return $this->newInstance($this->sum($this->getAmount(), $addend->getAmount(), static::SCALE));
     }
 
     /**
@@ -120,9 +124,8 @@ final class Money
     public function addPercent(Percentage $percentage)
     {
         $newValue = ($this->getAmount() * $percentage->getPercent());
-        $newValue = bcadd($this->getAmount(), $newValue, static::SCALE);
 
-        return $this->newInstance($newValue);
+        return $this->newInstance($this->sum($this->getAmount(), $newValue, static::SCALE));
     }
 
     /**
@@ -134,9 +137,8 @@ final class Money
     public function sub(Money $subtrahend)
     {
         $this->assertSameCurrency($subtrahend);
-        $newValue = bcsub($this->getAmount(), $subtrahend->getAmount(), static::SCALE);
 
-        return $this->newInstance($newValue);
+        return $this->newInstance($this->subtract($this->getAmount(), $subtrahend->getAmount(), static::SCALE));
     }
 
     /**
@@ -147,9 +149,8 @@ final class Money
     public function subPercent(Percentage $percentage)
     {
         $newValue = ($this->getAmount() * $percentage->getPercent());
-        $newValue = bcsub($this->getAmount(), $newValue, static::SCALE);
 
-        return $this->newInstance($newValue);
+        return $this->newInstance($this->subtract($this->getAmount(), $newValue, static::SCALE));
     }
 
     /**
@@ -161,7 +162,7 @@ final class Money
      */
     public function getFormat($decimals = 2, $decPoint = ',', $thousandsSep = '.')
     {
-        return number_format($this->getAmount(), $decimals, $decPoint, $thousandsSep);
+        return $this->format($this->getAmount(), $decimals, $decPoint, $thousandsSep);
     }
 
     /**
@@ -171,7 +172,7 @@ final class Money
      */
     public function getRound($decimals = 2)
     {
-        return sprintf('%0.'.$decimals.'f', $this->getAmount());
+        return $this->round($this->getAmount(), $decimals);
     }
 
     /**
@@ -181,11 +182,7 @@ final class Money
      */
     public function getTruncate($decimals = 2)
     {
-        if (($p = strpos($this->getAmount(), '.')) !== false) {
-            return substr($this->getAmount(), 0, $p + 1 + $decimals);
-        }
-
-        return $this->getAmount();
+        return $this->truncate($this->getAmount(), $decimals);
     }
 
     /**
