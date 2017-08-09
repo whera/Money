@@ -42,10 +42,6 @@ trait Formatters
      */
     protected function truncate($amount = "0.00", $decimals = 2)
     {
-        if (($p = strpos($amount, '.')) !== false) {
-            return substr($amount, 0, $p + 1 + $decimals);
-        }
-
-        return (string) $amount;
+        return (string) substr($amount, 0, strpos($amount, '.') + 1 + $decimals);
     }
 }
