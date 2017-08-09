@@ -156,4 +156,10 @@ class MoneyTest extends TestCase
 
         $this->assertEquals("1.500,01", (string) $money);
     }
+
+    public function testGetMicrons()
+    {
+        $money = new Money("1500.009999", new Currency("USD"));
+        $this->assertEquals(1500009999, $money->getMicros());
+    }
 }

@@ -186,6 +186,14 @@ final class Money
     }
 
     /**
+     * @return int
+     */
+    public function getMicros()
+    {
+        return (int) preg_replace('/[^0-9]/', '', $this->getAmount());
+    }
+
+    /**
      * @return string
      */
     public function __toString()

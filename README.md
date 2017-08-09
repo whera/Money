@@ -35,10 +35,11 @@ use WSW\Money\Money;
 
 $money = new Money("1500.9999", new Currency("USD"));
 
-echo $money->getAmount(); // (string) 1500.999900
-echo $money->getTruncate(); // (string) 1500.99
-echo $money->getRound(); // (string) 1501.00
-echo $money->getFormat(); // (string) 1.501,00
+echo $money->getAmount();   // (string)  1500.999900
+echo $money->getMicros();   // (integer) 1500999900
+echo $money->getTruncate(); // (string)  1500.99
+echo $money->getRound();    // (string)  1501.00
+echo $money->getFormat();   // (string)  1.501,00
 
 echo $money; // (string) 1.501,00
 ```
