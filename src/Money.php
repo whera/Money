@@ -17,7 +17,10 @@ final class Money
     use Calculation;
     use Formatters;
 
-    const SCALE = 6;
+    /**
+     * @var int
+     */
+    private $scale;
 
     /**
      * @var string
@@ -32,10 +35,12 @@ final class Money
     /**
      * @param string $amount
      * @param Currency $currency
+     * @param int $scale
      */
-    public function __construct($amount, Currency $currency)
+    public function __construct($amount, Currency $currency, $scale = 6)
     {
-        $this->amount = sprintf('%0.'.static::SCALE.'f', $amount);
+        $this->scale = (int) $scale;
+        $this->amount = sprintf('%0.'.$this->scale.'f', $amount);
         $this->currency = $currency;
     }
 
@@ -100,7 +105,7 @@ final class Money
     {
         $this->assertSameCurrency($other);
 
-        return $this->comparator($this->getAmount(), $other->getAmount(), static::SCALE);
+        return $this->comparator($this->getAmount(), $other->getAmount(), $this->scale);
     }
 
     /**
@@ -113,7 +118,7 @@ final class Money
     {
         $this->assertSameCurrency($addend);
 
-        return $this->newInstance($this->sum($this->getAmount(), $addend->getAmount(), static::SCALE));
+        return $this->newInstance($this->sum($this->getAmount(), $addend->getAmount(), $this->scale));
     }
 
     /**
@@ -125,7 +130,7 @@ final class Money
     {
         $newValue = ($this->getAmount() * $percentage->getPercent());
 
-        return $this->newInstance($this->sum($this->getAmount(), $newValue, static::SCALE));
+        return $this->newInstance($this->sum($this->getAmount(), $newValue, $this->scale));
     }
 
     /**
@@ -138,7 +143,7 @@ final class Money
     {
         $this->assertSameCurrency($subtrahend);
 
-        return $this->newInstance($this->subtract($this->getAmount(), $subtrahend->getAmount(), static::SCALE));
+        return $this->newInstance($this->subtract($this->getAmount(), $subtrahend->getAmount(), $this->scale));
     }
 
     /**
@@ -150,7 +155,7 @@ final class Money
     {
         $newValue = ($this->getAmount() * $percentage->getPercent());
 
-        return $this->newInstance($this->subtract($this->getAmount(), $newValue, static::SCALE));
+        return $this->newInstance($this->subtract($this->getAmount(), $newValue, $this->scale));
     }
 
     /**
