@@ -40,7 +40,7 @@ final class Money
     public function __construct($amount, Currency $currency, $scale = 6)
     {
         $this->scale = (int) $scale;
-        $this->amount = sprintf('%0.'.$this->scale.'f', $amount);
+        $this->amount = sprintf('%0.'.$this->scale.'F', $amount);
         $this->currency = $currency;
     }
 
