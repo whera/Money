@@ -31,7 +31,7 @@ trait Formatters
      */
     protected function round($amount = "0.00", $decimals = 2)
     {
-        return sprintf('%0.'.$decimals.'f', $amount);
+        return sprintf('%0.'.$decimals.'F', $amount);
     }
 
     /**
